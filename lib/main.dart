@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui' show FontFeature;
+import 'dart:ui' as ui show FontFeature, TextDirection;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -67,9 +67,11 @@ class DfishLiveApp extends StatelessWidget {
           focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: cMint)),
         ),
       ),
-      builder: (context, child) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: child ?? const SizedBox.shrink(),
+      builder: (context, child) => MaterialUiCompatibilityBridge(
+        child: Directionality(
+          textDirection: ui.TextDirection.rtl,
+          child: child ?? const SizedBox.shrink(),
+        ),
       ),
       home: const AppShell(),
     );
@@ -262,7 +264,7 @@ class BrandMark extends StatelessWidget {
   final bool compact;
   @override
   Widget build(BuildContext context) => Directionality(
-    textDirection: TextDirection.ltr,
+    textDirection: ui.TextDirection.ltr,
     child: RichText(
       text: TextSpan(children: [
         TextSpan(text: 'DFISH ', style: TextStyle(color: cText, fontSize: compact ? 18 : 23, fontWeight: FontWeight.w900, letterSpacing: .4)),
@@ -491,7 +493,7 @@ class MatchTile extends StatelessWidget {
         if (match.isLive) Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3), decoration: BoxDecoration(color: const Color(0xFFFF5267).withValues(alpha: .14), borderRadius: BorderRadius.circular(5)), child: Text(match.timeLabel, style: const TextStyle(color: Color(0xFFFF7182), fontSize: 10, fontWeight: FontWeight.w800)))
         else Text(match.timeLabel, style: const TextStyle(color: cMuted, fontSize: 11)),
         const SizedBox(height: 5),
-        Text(match.score, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, fontFeatures: [FontFeature.tabularFigures()])),
+        Text(match.score, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, fontFeatures: [ui.FontFeature.tabularFigures()])),
         if (match.isFinished) const Text('انتهت', style: TextStyle(color: cMuted, fontSize: 9)),
       ])),
       Expanded(child: _team(match.away, match.awayLogo, match.awayWinner, right: true)),
